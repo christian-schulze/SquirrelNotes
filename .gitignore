@@ -1,0 +1,7 @@
+app
+packages
+*.swp
+*.vim
+**/.DS_Store
+node_modules
+
