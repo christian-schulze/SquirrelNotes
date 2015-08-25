@@ -97,6 +97,11 @@ class NotesController {
       <body class="markdown-body">${htmlBody}</body>
       </html>`;
 
+      // if html file doesn't already exist, need to bootstrap the htmlPath here
+      if (!_.isString(note.htmlPath) || !note.htmlPath.length === 0) {
+        let extname = path.extname(note.mdPath);
+        note.htmlPath = path.basename(note.mdPath, extname) + '.html';
+      }
       this.notesRepository.save(note.htmlPath, htmlPage);
 
       note.htmlContent = htmlPage;

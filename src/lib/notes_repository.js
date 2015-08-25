@@ -40,8 +40,12 @@ class NotesRepository {
   }
 
   load(fileName) {
-    let fullFilePath = Path.join(this.notesPath, fileName);
-    return JetPack.read(fullFilePath);
+    if (_.isString(fileName) && fileName.length > 0) {
+      let fullFilePath = Path.join(this.notesPath, fileName);
+      return JetPack.read(fullFilePath);
+    } else {
+      return null;
+    }
   }
 
   save(fileName, content) {
