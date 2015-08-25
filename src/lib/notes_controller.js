@@ -3,6 +3,7 @@
 let app = require('app');
 let ipc = require('ipc');
 let path = require('path');
+let _ = require('lodash');
 let TagsRepository = require('./tags_repository.js');
 let NotesRepository = require('./notes_repository');
 let BrowserWindow = require('browser-window');
@@ -59,7 +60,7 @@ class NotesController {
 
   getHtml(event, note) {
     let content = this.notesRepository.load(note.htmlPath);
-    if (content) {
+    if (_.isString(content)) {
       note.htmlContent = content;
       event.sender.send('html_content', note);
     }
@@ -67,7 +68,7 @@ class NotesController {
 
   getMarkdown(event, note) {
     let content = this.notesRepository.load(note.mdPath);
-    if (content) {
+    if (_.isString(content)) {
       note.markdownContent = content;
       event.sender.send('markdown_content', note);
     }

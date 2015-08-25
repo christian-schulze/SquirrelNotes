@@ -26,7 +26,7 @@ let MarkdownEditor = React.createClass({
   },
 
   render() {
-    if (this.state.note && this.state.note.markdownContent) {
+    if (this.state.note && _.isString(this.state.note.markdownContent)) {
       return <textarea
         id="mardown-editor"
         className="form-control"
