@@ -33,8 +33,13 @@ class TagsRepository {
 
   updateTags(noteTitle, tags = []) {
     let notesCollection = this.db.getCollection('notes');
-    let note = notesCollection.by('title', noteTitle);
-    if (note) {
+
+    let note = null;
+    if (notesCollection.data.length > 0) {
+      note = notesCollection.by('title', noteTitle);
+    }
+
+    if (note !== null) {
       console.log(`updating(title: "${noteTitle}") { tags: ${tags} }`);
       note.tags = tags;
       notesCollection.update(note);
