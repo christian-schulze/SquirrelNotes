@@ -16,6 +16,7 @@ let SearchResults = React.createClass({
   componentDidMount() {
     ipc.send('notes.get_list', '');
     ipc.on('notes_list', (notes) => { this.notesListReceived(notes); });
+    ipc.on('tags_saved', (note) => { this.tagsSaved(note); });
     MessageBus.subscribe('NextNote', (data) => { this.nextNote(); });
     MessageBus.subscribe('PreviousNote', (data) => { this.previousNote(); });
     MessageBus.subscribe('FilterNotes', (data) => { this.filterNotes(data); });
@@ -41,6 +42,26 @@ let SearchResults = React.createClass({
 
   notesListReceived(notes) {
     this.setState({ notes: notes, filteredNotes: notes.slice() });
+  },
+
+  tagsSaved(note) {
+    let state = Object.assign({}, this.state);
+
+    let existingNote = _.find(state.notes, { 'title': note.title });
+    if (existingNote) {
+      existingNote.tags = note.tags;
+    }
+
+    existingNote = _.find(state.filteredNotes, { 'title': note.title});
+    if (existingNote) {
+      existingNote.tags = note.tags;
+    }
+
+    if (state.selectedNote && state.selectedNote.title === note.title) {
+      state.selectedNote.tags = note.tags;
+    }
+
+    this.setState(state);
   },
 
   filterNotes(data) {
