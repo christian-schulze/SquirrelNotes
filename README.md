@@ -27,13 +27,15 @@ gulp package # Create a stand-alone application in the packages folder
 npm start # start the app in development mode
 ```
 
-
 ## TODO
+- [ ] Add note
 - [ ] Rename note (change title)
 - [ ] Delete note
-- [ ] Optimize keyboard only use (the mouse should be completely optional)
+- [ ] Optimize for keyboard-only use (mouse should be completely optional)
 - [ ] Allow vertical resizing of results table (and persist the size)
+- [ ] Rework html/css layout, so resizing works better
 - [ ] Implement better editor ([AlloyEditor](http://alloyeditor.com))
+- [ ] Add auto-updater (when new build is available)
 - [ ] Refactor using the flux pattern (specifically [Redux](https://github.com/rackt/redux))
 - [ ] Add tests ([electron-mocka](https://github.com/jprichardson/electron-mocha) and/or [selenium/webdriver](http://electron.atom.io/docs/v0.31.0/tutorial/using-selenium-and-webdriver/))
 
