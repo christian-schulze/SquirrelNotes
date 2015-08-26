@@ -213,7 +213,7 @@ let SearchResults = React.createClass({
     return <div
       ref="searchResultsDiv"
       id="search-results"
-      tabIndex="1"
+      tabIndex="2"
       onKeyDown={this.keyDownHandler}
       style={{height: '250px'}}>
       <table className="table table-striped table-hover table-condensed">

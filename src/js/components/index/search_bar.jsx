@@ -78,6 +78,10 @@ let SearchBar = React.createClass({
     this.filterNotes);
   },
 
+  addNoteButtonClickHandler(event) {
+    alert('implement me');
+  },
+
   render() {
     return <div id="search-bar">
       <div className="input-group">
@@ -94,6 +98,14 @@ let SearchBar = React.createClass({
           onTagRemove={this.tagRemoveHandler}
           addKeys={[186]}
           addOnBlur={false} />
+        <span className="input-group-btn">
+          <button
+            tabIndex="1"
+            className="btn btn-primary"
+            onClick={this.addNoteButtonClickHandler}>
+            <span className="glyphicon glyphicon-plus"></span>
+          </button>
+        </span>
       </div>
     </div>;
   }
