@@ -14,7 +14,7 @@ I love the simplicity and `stay out of your way` style of NV and nvALT, but thei
 ## Development
 To set up a development environment, simply do:
 ```sh
-git clone git@github.com:christian-schulze/squirrelnotes.git
+git clone git@github.com:christian-schulze/SquirrelNotes.git
 cd squirrelnotes
 npm install --dev
 gulp build
