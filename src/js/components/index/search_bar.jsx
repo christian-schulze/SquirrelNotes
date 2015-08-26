@@ -86,6 +86,7 @@ let SearchBar = React.createClass({
         </span>
         <TagsInput
           ref="tagsInput"
+          placeholder="Filter by tag and fuzzy search by title"
           onChangeInput={this.searchTermChangeHandler}
           onKeyDown={this.keyDownHandler}
           beforeTagAdd={this.beforeTagAddHandler}

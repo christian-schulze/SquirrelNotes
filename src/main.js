@@ -23,6 +23,7 @@ app.on('ready', function() {
     y: mainWindowState.y,
     width: mainWindowState.width,
     height: mainWindowState.height,
+    'min-width': 480,
     web_preferences: {
       web_security: false
     }
