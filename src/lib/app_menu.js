@@ -29,7 +29,7 @@ function init(window) {
       label: 'Create',
       accelerator: 'CmdOrCtrl+N',
       click: function() {
-        window.send('new_note', '');
+        window.send('NewNote', '');
       }
     }, {
       label: 'Edit',

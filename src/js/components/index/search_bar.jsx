@@ -79,7 +79,7 @@ let SearchBar = React.createClass({
   },
 
   addNoteButtonClickHandler(event) {
-    alert('implement me');
+    MessageBus.publish('NewNote', null);
   },
 
   render() {

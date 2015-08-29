@@ -39,7 +39,7 @@ class TagsRepository {
       note = notesCollection.by('title', noteTitle);
     }
 
-    if (note !== null) {
+    if (note !== null && note !== undefined) {
       console.log(`updating(title: "${noteTitle}") { tags: ${tags} }`);
       note.tags = tags;
       notesCollection.update(note);

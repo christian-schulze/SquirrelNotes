@@ -3,6 +3,7 @@
 let _ = require('lodash');
 let Path = require('path');
 let JetPack = require('fs-jetpack');
+let fs = require('fs');
 
 class NotesRepository {
   constructor(notesPath, tagsRepo) {
@@ -52,6 +53,12 @@ class NotesRepository {
     let fullFilePath = Path.join(this.notesPath, fileName);
     console.log(`Saving "${fullFilePath}"`);
     JetPack.write(fullFilePath, content);
+  }
+
+  create(fileName) {
+    let fullFilePath = Path.join(this.notesPath, fileName);
+    console.log(`Creating "${fullFilePath}"`);
+    fs.writeFileSync(fullFilePath, '');
   }
 }
 

@@ -51,6 +51,7 @@ class NotesController {
     ipc.on('notes.get_available_tags', this.getAvailableTags.bind(this));
     ipc.on('notes.save_markdown', this.saveMarkdown.bind(this));
     ipc.on('notes.save_tags', this.saveTags.bind(this));
+    ipc.on('notes.create_note', this.createNote.bind(this));
   }
 
   getList(event, arg) {
@@ -119,6 +120,14 @@ class NotesController {
       let window = BrowserWindow.getFocusedWindow();
       window.webContents.send('tags_saved', note);
     }
+  }
+
+  createNote(event, title) {
+    console.log('NotesController: IPC("notes.create_note") received');
+    this.notesRepository.create(`${title}.md`);
+
+    let window = BrowserWindow.getFocusedWindow();
+    window.webContents.send('note_created', title);
   }
 }
 

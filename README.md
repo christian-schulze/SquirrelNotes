@@ -28,7 +28,7 @@ npm start # start the app in development mode
 ```
 
 ## TODO
-- [ ] Add note
+- [x] Add note
 - [ ] Rename note (change title)
 - [ ] Delete note
 - [ ] Optimize for keyboard-only use (mouse should be completely optional)
