@@ -279,7 +279,7 @@ let SearchResults = React.createClass({
   },
 
   renderNewNote() {
-    return <tr key="newNote" className="success">
+    return <tr key="newNote" className="new">
       <td className="title">
         <input ref="newNoteInput"
           type="text"
