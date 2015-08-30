@@ -68,7 +68,7 @@ let SearchResults = React.createClass({
       existingNote.tags = note.tags;
     }
 
-    existingNote = _.find(state.filteredNotes, { 'title': note.title});
+    existingNote = _.find(state.filteredNotes, { 'title': note.title });
     if (existingNote) {
       existingNote.tags = note.tags;
     }
@@ -146,7 +146,7 @@ let SearchResults = React.createClass({
     }
   },
 
-  keyDownHandler(event) {
+  handleKeyDown(event) {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
       this.nextNote();
@@ -164,7 +164,7 @@ let SearchResults = React.createClass({
     }
   },
 
-  rowClickHandler(note, event) {
+  handleRowClick(note, event) {
     event.preventDefault();
     this.selectNote(note);
   },
@@ -258,7 +258,7 @@ let SearchResults = React.createClass({
     return <tr
       key={note.title}
       className={this.rowSelectedClass(note)}
-      onClick={this.rowClickHandler.bind(this, note)}>
+      onClick={this.handleRowClick.bind(this, note)}>
       <td className="title" >{note.title}</td>
       <td className="tags" onDoubleClick={this.handleTagsDoubleClick}>
         {this.renderTags(note)}
@@ -283,7 +283,7 @@ let SearchResults = React.createClass({
       ref="searchResultsDiv"
       id="search-results"
       tabIndex="2"
-      onKeyDown={this.keyDownHandler}
+      onKeyDown={this.handleKeyDown}
       style={{height: '250px'}}>
       <table className="table table-striped table-hover table-condensed">
         <thead>
