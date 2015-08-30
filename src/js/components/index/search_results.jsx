@@ -26,7 +26,9 @@ let SearchResults = React.createClass({
     ipc.on('notes_list', (notes) => { this.notesListReceived(notes); });
     ipc.on('tags_saved', (note) => { this.tagsSaved(note); });
     ipc.on('note_created', (title) => { this.noteCreated(title); });
+    ipc.on('note_deleted', (note) => { this.noteDeleted(note); });
     ipc.on('NewNote', (data) => { this.newNote(); });
+    ipc.on('DeleteNote', (data) => { this.deleteSelectedNote(); });
     MessageBus.subscribe('NextNote', (data) => { this.nextNote(); });
     MessageBus.subscribe('PreviousNote', (data) => { this.previousNote(); });
     MessageBus.subscribe('FilterNotes', (data) => { this.filterNotes(data); });
@@ -85,6 +87,13 @@ let SearchResults = React.createClass({
     ipc.send('notes.get_list', '');
   },
 
+  noteDeleted(note) {
+    if (this.state.selectedNote && this.state.selectedNote.title === note.title) {
+      this.setState({ selectedNote: null });
+    }
+    ipc.send('notes.get_list', '');
+  },
+
   filterNotes(data) {
     if (data.selectedTags.length > 0 || data.filter.length > 0) {
       let notes = this.state.notes.slice();
@@ -136,6 +145,12 @@ let SearchResults = React.createClass({
     }
   },
 
+  deleteSelectedNote() {
+    if (this.state.selectedNote !== null && this.state.editingState === EditingState.NOTHING) {
+      ipc.send('notes.delete_note', this.state.selectedNote);
+    }
+  },
+
   selectNote(note) {
     if (note && (this.state.selectedNote === null || this.state.selectedNote.title !== note.title)) {
       this.setState({
@@ -146,6 +161,14 @@ let SearchResults = React.createClass({
     }
   },
 
+  rowSelectedClass(note) {
+    if (this.state.selectedNote && this.state.selectedNote.title === note.title) {
+      return 'success';
+    } else {
+      return '';
+    }
+  },
+
   handleKeyDown(event) {
     if (event.key === 'ArrowDown') {
       event.preventDefault();
@@ -153,14 +176,6 @@ let SearchResults = React.createClass({
     } else if (event.key === 'ArrowUp') {
       event.preventDefault();
       this.previousNote();
-    }
-  },
-
-  rowSelectedClass(note) {
-    if (this.state.selectedNote && this.state.selectedNote.title === note.title) {
-      return 'success';
-    } else {
-      return '';
     }
   },
 

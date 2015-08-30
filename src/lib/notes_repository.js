@@ -60,6 +60,14 @@ class NotesRepository {
     console.log(`Creating "${fullFilePath}"`);
     fs.writeFileSync(fullFilePath, '');
   }
+
+  delete(fileName) {
+    let fullFilePath = Path.join(this.notesPath, fileName);
+    if (JetPack.exists(fullFilePath)) {
+      console.log(`Deleting "${fullFilePath}"`);
+      fs.unlinkSync(fullFilePath);
+    }
+  }
 }
 
 module.exports = NotesRepository;

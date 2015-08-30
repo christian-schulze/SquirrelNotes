@@ -30,7 +30,7 @@ npm start # start the app in development mode
 ## TODO
 - [x] Add note
 - [ ] Rename note (change title)
-- [ ] Delete note
+- [x] Delete note
 - [ ] Optimize for keyboard-only use (mouse should be completely optional)
 - [ ] Allow vertical resizing of results table (and persist the size)
 - [ ] Rework html/css layout, so resizing works better

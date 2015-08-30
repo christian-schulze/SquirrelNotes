@@ -36,7 +36,10 @@ function init(window) {
       accelerator: 'CmdOrCtrl+E'
     }, {
       label: 'Delete',
-      accelerator: 'CmdOrCtrl+D'
+      accelerator: 'CmdOrCtrl+D',
+      click: function() {
+        window.send('DeleteNote', '');
+      }
     }]
   });
 

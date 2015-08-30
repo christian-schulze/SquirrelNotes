@@ -52,6 +52,7 @@ class NotesController {
     ipc.on('notes.save_markdown', this.saveMarkdown.bind(this));
     ipc.on('notes.save_tags', this.saveTags.bind(this));
     ipc.on('notes.create_note', this.createNote.bind(this));
+    ipc.on('notes.delete_note', this.deleteNote.bind(this));
   }
 
   getList(event, arg) {
@@ -128,6 +129,18 @@ class NotesController {
 
     let window = BrowserWindow.getFocusedWindow();
     window.webContents.send('note_created', title);
+  }
+
+  deleteNote(event, note) {
+    console.log('NotesController: IPC("notes.delete_note") received');
+    if (note) {
+      this.notesRepository.delete(`${note.title}.md`);
+      this.notesRepository.delete(`${note.title}.html`);
+      this.tagsRepo.delete(note.title);
+
+      let window = BrowserWindow.getFocusedWindow();
+      window.webContents.send('note_deleted', note);
+    }
   }
 }
 
