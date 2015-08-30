@@ -27,8 +27,10 @@ let SearchResults = React.createClass({
     ipc.on('tags_saved', (note) => { this.tagsSaved(note); });
     ipc.on('note_created', (title) => { this.noteCreated(title); });
     ipc.on('note_deleted', (note) => { this.noteDeleted(note); });
+    ipc.on('note_renamed', (note) => { this.noteRenamed(note); });
     ipc.on('NewNote', (data) => { this.newNote(); });
     ipc.on('DeleteNote', (data) => { this.deleteSelectedNote(); });
+    ipc.on('RenameNote', (data) => { this.renameSelectedNote(); });
     MessageBus.subscribe('NextNote', (data) => { this.nextNote(); });
     MessageBus.subscribe('PreviousNote', (data) => { this.previousNote(); });
     MessageBus.subscribe('FilterNotes', (data) => { this.filterNotes(data); });
@@ -36,12 +38,26 @@ let SearchResults = React.createClass({
   },
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.editingState !== EditingState.TAGS && this.state.editingState === EditingState.TAGS) {
+    if (prevState.editingState !== EditingState.TITLE && this.state.editingState === EditingState.TITLE) {
+      let el = React.findDOMNode(this.refs.titleInput);
+      if ($(el).not(':focus')) {
+        $(el).focus();
+      }
+    } else if (prevState.editingState === EditingState.TITLE && this.state.editingState === EditingState.NOTHING) {
+      // if onblur originated from component outside search results div
+      let searchResultsDiv = $(this.state.relatedTarget)
+        .parents(`#${this.refs.searchResultsDiv.props.id}`).get(0);
+      if (searchResultsDiv || this.state.relatedTarget === null) {
+        let el = React.findDOMNode(this.refs.searchResultsDiv);
+        $(el).focus();
+      }
+      this.setState({ relatedTarget: null });
+    } else if (prevState.editingState !== EditingState.TAGS && this.state.editingState === EditingState.TAGS) {
       let el = React.findDOMNode(this.refs.tagsInput);
       if ($(el).not(':focus')) {
         $(el).focus();
       }
-    } else if (prevState.editingState === EditingState.TAGS && this.state.editingState !== EditingState.TAGS) {
+    } else if (prevState.editingState === EditingState.TAGS && this.state.editingState === EditingState.NOTHING) {
       // if onblur originated from component outside search results div
       let searchResultsDiv = $(this.state.relatedTarget)
         .parents(`#${this.refs.searchResultsDiv.props.id}`).get(0);
@@ -63,23 +79,10 @@ let SearchResults = React.createClass({
   },
 
   tagsSaved(note) {
-    let state = Object.assign({}, this.state);
-
-    let existingNote = _.find(state.notes, { 'title': note.title });
-    if (existingNote) {
-      existingNote.tags = note.tags;
+    if (this.state.editingState === EditingState.TAGS && this.state.selectedNote && this.state.selectedNote.title === note.title) {
+      this.setState({ editingState: EditingState.NOTHING });
     }
-
-    existingNote = _.find(state.filteredNotes, { 'title': note.title });
-    if (existingNote) {
-      existingNote.tags = note.tags;
-    }
-
-    if (state.selectedNote && state.selectedNote.title === note.title) {
-      state.selectedNote.tags = note.tags;
-    }
-
-    this.setState(state);
+    ipc.send('notes.get_list', '');
   },
 
   noteCreated(title) {
@@ -90,6 +93,13 @@ let SearchResults = React.createClass({
   noteDeleted(note) {
     if (this.state.selectedNote && this.state.selectedNote.title === note.title) {
       this.setState({ selectedNote: null });
+    }
+    ipc.send('notes.get_list', '');
+  },
+
+  noteRenamed(note) {
+    if (this.state.editingState === EditingState.TITLE && this.state.selectedNote && this.state.selectedNote.title === note.title) {
+      this.setState({ editingState: EditingState.NOTHING });
     }
     ipc.send('notes.get_list', '');
   },
@@ -151,6 +161,12 @@ let SearchResults = React.createClass({
     }
   },
 
+  renameSelectedNote() {
+    if (this.state.selectedNote !== null && this.state.editingState === EditingState.NOTHING) {
+      this.setState({ editingState: EditingState.TITLE });
+    }
+  },
+
   selectNote(note) {
     if (note && (this.state.selectedNote === null || this.state.selectedNote.title !== note.title)) {
       this.setState({
@@ -184,6 +200,35 @@ let SearchResults = React.createClass({
     this.selectNote(note);
   },
 
+  handleTitleDoubleClick(event) {
+    event.preventDefault();
+    if (this.state.editingState !== EditingState.TITLE) {
+      this.setState({ editingState: EditingState.TITLE });
+    }
+  },
+
+  handleTitleKeyDown(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      let newTitle = React.findDOMNode(this.refs.titleInput).value;
+      ipc.send('notes.rename_note', this.state.selectedNote, newTitle);
+    } else if (event.key === 'Escape') {
+      event.preventDefault();
+      this.setState({
+        editingState: EditingState.NOTHING,
+        relatedTarget: null
+      });
+    }
+  },
+
+  handleTitleBlur(event) {
+    event.preventDefault();
+    this.setState({
+      editingState: EditingState.NOTHING,
+      relatedTarget: event.relatedTarget
+    });
+  },
+
   handleTagsDoubleClick(event) {
     event.preventDefault();
     if (this.state.editingState !== EditingState.TAGS) {
@@ -194,7 +239,10 @@ let SearchResults = React.createClass({
   handleTagsKeyDown(event) {
     if (event.key === 'Enter') {
       event.preventDefault();
-      this.handleTagsBlur(event);
+      let note = Object.assign({}, this.state.selectedNote, {
+        tags: React.findDOMNode(this.refs.tagsInput).value.split(' ')
+      });
+      ipc.send('notes.save_tags', note);
     } else if (event.key === 'Escape') {
       event.preventDefault();
       this.setState({
@@ -206,17 +254,10 @@ let SearchResults = React.createClass({
 
   handleTagsBlur(event) {
     event.preventDefault();
-
-    let note = Object.assign({}, this.state.selectedNote, {
-      tags: React.findDOMNode(this.refs.tagsInput).value.split(' ')
-    });
-
-    this.setState({
-      editingState: EditingState.NOTHING,
-      relatedTarget: event.relatedTarget
-    }, function() {
-      ipc.send('notes.save_tags', note);
-    });
+      this.setState({
+        editingState: EditingState.NOTHING,
+        relatedTarget: event.relatedTarget
+      });
   },
 
   handleNewNoteKeyDown(event) {
@@ -250,6 +291,19 @@ let SearchResults = React.createClass({
     </tr>;
   },
 
+  renderTitle(note) {
+    if (this.state.editingState === EditingState.TITLE && this.state.selectedNote && this.state.selectedNote.title === note.title) {
+      return <input
+        ref="titleInput"
+        type="text"
+        defaultValue={note.title}
+        onBlur={this.handleTitleBlur}
+        onKeyDown={this.handleTitleKeyDown} />;
+    } else {
+      return note.title;
+    }
+  },
+
   renderTags(note) {
     if (this.state.editingState === EditingState.TAGS && this.state.selectedNote && this.state.selectedNote.title === note.title) {
       return <input
@@ -274,7 +328,9 @@ let SearchResults = React.createClass({
       key={note.title}
       className={this.rowSelectedClass(note)}
       onClick={this.handleRowClick.bind(this, note)}>
-      <td className="title" >{note.title}</td>
+      <td className="title" onDoubleClick={this.handleTitleDoubleClick}>
+        {this.renderTitle(note)}
+      </td>
       <td className="tags" onDoubleClick={this.handleTagsDoubleClick}>
         {this.renderTags(note)}
       </td>

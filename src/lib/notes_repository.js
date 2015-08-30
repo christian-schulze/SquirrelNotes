@@ -68,6 +68,15 @@ class NotesRepository {
       fs.unlinkSync(fullFilePath);
     }
   }
+
+  rename(fileName, newFileName) {
+    let fullFilePath = Path.join(this.notesPath, fileName);
+    let newFullFilePath = Path.join(this.notesPath, newFileName);
+    if (JetPack.exists(fullFilePath)) {
+      console.log(`Renaming "${fullFilePath}" --> "${newFullFilePath}"`);
+      fs.rename(fullFilePath, newFullFilePath);
+    }
+  }
 }
 
 module.exports = NotesRepository;

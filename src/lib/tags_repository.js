@@ -39,6 +39,21 @@ class TagsRepository {
     }
   }
 
+  rename(noteTitle, newNoteTitle) {
+    let notesCollection = this.db.getCollection('notes');
+
+    let note = null;
+    if (notesCollection.data.length > 0) {
+      note = notesCollection.by('title', noteTitle);
+    }
+
+    if (note !== null && note !== undefined) {
+      console.log(`renaming(title: "${noteTitle}") { title: "${newNoteTitle}" }`);
+      note.title = newNoteTitle;
+      notesCollection.update(note);
+    }
+  }
+
   allTags() {
     return _.reduce(this.db.getCollection('notes').data, function(tags, note) {
       return _.union(tags, note.tags);

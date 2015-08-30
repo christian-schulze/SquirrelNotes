@@ -53,6 +53,7 @@ class NotesController {
     ipc.on('notes.save_tags', this.saveTags.bind(this));
     ipc.on('notes.create_note', this.createNote.bind(this));
     ipc.on('notes.delete_note', this.deleteNote.bind(this));
+    ipc.on('notes.rename_note', this.renameNote.bind(this));
   }
 
   getList(event, arg) {
@@ -140,6 +141,20 @@ class NotesController {
 
       let window = BrowserWindow.getFocusedWindow();
       window.webContents.send('note_deleted', note);
+    }
+  }
+
+  renameNote(event, note, newTitle) {
+    console.log('NotesController: IPC("notes.delete_note") received');
+    if (note) {
+      this.notesRepository.rename(note.mdPath, `${newTitle}.md`);
+      this.notesRepository.rename(note.htmlPath, `${newTitle}.html`);
+      this.tagsRepo.rename(note.title, newTitle);
+
+      let newNote = Object.assign({}, note, { title: newTitle });
+
+      let window = BrowserWindow.getFocusedWindow();
+      window.webContents.send('note_renamed', newNote);
     }
   }
 }
