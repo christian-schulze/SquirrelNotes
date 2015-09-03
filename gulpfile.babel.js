@@ -157,6 +157,7 @@ gulp.task('build:js', function() {
       base: BASE
     })
     .pipe(changed(DEST))
+    .pipe(plumber())
     .pipe(babel(babelOptions))
     .pipe(gulp.dest(DEST));
 });
