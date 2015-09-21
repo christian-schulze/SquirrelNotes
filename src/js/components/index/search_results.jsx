@@ -1,5 +1,4 @@
 /* global Fuse:false */
-"use strict";
 
 let ipc = require('ipc');
 

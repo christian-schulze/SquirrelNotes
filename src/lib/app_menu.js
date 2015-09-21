@@ -1,4 +1,3 @@
-"use strict";
 
 let app = require('app');
 let Menu = require('menu');

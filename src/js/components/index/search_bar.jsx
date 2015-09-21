@@ -1,4 +1,3 @@
-"use strict";
 
 let ipc = require('ipc');
 let TagsInput = require('react-tagsinput');

@@ -27,7 +27,8 @@ const babelOptions = {
     'es6.parameters',
     'es6.spread',
     'es6.modules',
-    'runtime'
+    'runtime',
+    'strict'
   ]
 };
 

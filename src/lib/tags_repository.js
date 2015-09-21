@@ -1,4 +1,3 @@
-"use strict";
 
 let _ = require('lodash');
 let Loki = require('lokijs');

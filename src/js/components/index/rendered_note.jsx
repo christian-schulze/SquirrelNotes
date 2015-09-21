@@ -1,4 +1,3 @@
-"use strict";
 
 let RenderedNote = React.createClass({
   componentDidMount() {
