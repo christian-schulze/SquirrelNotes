@@ -1,8 +1,10 @@
 
-let ipc = require('ipc');
+import React from '../../../node_modules/react';
 
-let MarkdownEditor = require('./markdown_editor');
-let RenderedNote = require('./rendered_note');
+import ipc from 'ipc';
+
+import MarkdownEditor from './markdown_editor';
+import RenderedNote from './rendered_note';
 
 let Content = React.createClass({
   getInitialState() {

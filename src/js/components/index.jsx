@@ -1,10 +1,16 @@
 
-global.jQuery = require('jquery');
-global.$ = global.jQuery;
-global._ = require('lodash');
-global.MessageBus = require('../lib/message_bus');
+import jQuery from 'jquery';
+global.jQuery = jQuery;
+global.$ = jQuery;
+
+
+import MessageBus from '../lib/message_bus';
+global.MessageBus = MessageBus;
+
+// use explicit path to avoid loading react module from parent project
+import React from '../node_modules/react';
+
 require('bootstrap');
-global.React = require('../node_modules/react');
 
 let SearchBar     = require('../js/components/index/search_bar');
 let SearchResults = require('../js/components/index/search_results');

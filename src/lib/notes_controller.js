@@ -1,11 +1,11 @@
 
-let app = require('app');
-let ipc = require('ipc');
-let path = require('path');
-let _ = require('lodash');
-let TagsRepository = require('./tags_repository.js');
-let NotesRepository = require('./notes_repository');
-let BrowserWindow = require('browser-window');
+import app from 'app';
+import ipc from 'ipc';
+import path from 'path';
+import _ from 'lodash';
+import TagsRepository from './tags_repository.js';
+import NotesRepository from './notes_repository';
+import BrowserWindow from 'browser-window';
 
 let hl = require('highlight.js');
 let md = require('markdown-it')('default', {
@@ -34,7 +34,7 @@ let md = require('markdown-it')('default', {
 });
 
 
-class NotesController {
+export default class NotesController {
   constructor() {
     this.tagsDbPath = path.join(app.getPath('userData'), 'tags.db');
     this.tagsRepo = new TagsRepository(this.tagsDbPath);
@@ -157,6 +157,4 @@ class NotesController {
     }
   }
 }
-
-module.exports = NotesController;
 

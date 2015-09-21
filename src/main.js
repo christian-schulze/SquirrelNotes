@@ -1,13 +1,13 @@
 
-let Path = require('path');
+import Path from 'path';
 
 
-let app = require('app');
-let BrowserWindow = require('browser-window');
-let AppMenu = require('./lib/app_menu');
-let WindowState = require('./lib/window_state');
-let Repl = require('./lib/repl');
-let NotesController = require('./lib/notes_controller.js');
+import app from 'app';
+import BrowserWindow from 'browser-window';
+import AppMenu from './lib/app_menu';
+import WindowState from './lib/window_state';
+import Repl from './lib/repl';
+import NotesController from './lib/notes_controller.js';
 
 
 let mainWindow = null;

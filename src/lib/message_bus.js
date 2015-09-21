@@ -1,7 +1,7 @@
 
 let topics = {};
 
-class MessageBus {
+export default class MessageBus {
   static subscribe(topic, listener) {
     if (!topics[topic]) {
       topics[topic] = [];
@@ -20,6 +20,4 @@ class MessageBus {
     }
   }
 }
-
-module.exports = MessageBus;
 

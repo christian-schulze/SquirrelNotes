@@ -1,5 +1,8 @@
 
-let ipc = require('ipc');
+import React from '../../../node_modules/react';
+import _ from 'lodash';
+
+import ipc from 'ipc';
 
 let MarkdownEditor = React.createClass({
   getInitialState() {

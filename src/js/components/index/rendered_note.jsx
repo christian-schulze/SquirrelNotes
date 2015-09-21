@@ -1,4 +1,6 @@
 
+import React from '../../../node_modules/react';
+
 let RenderedNote = React.createClass({
   componentDidMount() {
     this.contentsEl = $('#contents');

@@ -1,7 +1,7 @@
 
-let app = require('app');
-let Menu = require('menu');
-let BrowserWindow = require('browser-window');
+import app from 'app';
+import Menu from 'menu';
+import BrowserWindow from 'browser-window';
 
 function init(window) {
   let menus = [];
@@ -104,5 +104,5 @@ function init(window) {
   Menu.setApplicationMenu(menu);
 }
 
-module.exports = { init: init };
+export default { init };
 

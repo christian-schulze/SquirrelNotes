@@ -1,10 +1,10 @@
 
-let _ = require('lodash');
-let Path = require('path');
-let JetPack = require('fs-jetpack');
-let fs = require('fs');
+import _ from 'lodash';
+import Path from 'path';
+import JetPack from 'fs-jetpack';
+import fs from 'fs';
 
-class NotesRepository {
+export default class NotesRepository {
   constructor(notesPath, tagsRepo) {
     this.notesPath = notesPath;
     this.tagsRepo = tagsRepo;
@@ -77,6 +77,4 @@ class NotesRepository {
     }
   }
 }
-
-module.exports = NotesRepository;
 

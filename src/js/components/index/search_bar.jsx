@@ -1,6 +1,9 @@
 
-let ipc = require('ipc');
-let TagsInput = require('react-tagsinput');
+import React from '../../../node_modules/react';
+import _ from 'lodash';
+
+import ipc from 'ipc';
+import TagsInput from 'react-tagsinput';
 
 const KeyMessageMap = {
   'ArrowDown': 'NextNote',

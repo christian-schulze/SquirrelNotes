@@ -1,12 +1,14 @@
 
-let os = require('os');
-let path = require('path');
-let app = require('app');
+import os from 'os';
+import path from 'path';
+import app from 'app';
 
-let replify = require('replify');
-let replServer = require('http').createServer();
+import replify from 'replify';
+import http from 'http';
 
-class Repl {
+const replServer = http.createServer();
+
+export default class Repl {
   static start() {
     replify({
       name: 'current',
@@ -15,6 +17,4 @@ class Repl {
     replServer);
   }
 }
-
-module.exports = Repl;
 

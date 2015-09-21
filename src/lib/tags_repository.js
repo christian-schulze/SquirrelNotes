@@ -1,8 +1,8 @@
 
-let _ = require('lodash');
-let Loki = require('lokijs');
+import _ from 'lodash';
+import Loki from 'lokijs';
 
-class TagsRepository {
+export default class TagsRepository {
   constructor(dbPath) {
     this.dbPath = dbPath;
 
@@ -90,6 +90,4 @@ class TagsRepository {
     }
   }
 }
-
-module.exports = TagsRepository;
 

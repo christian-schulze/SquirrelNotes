@@ -1,8 +1,8 @@
 
-let app = require('app');
-let jetpack = require('fs-jetpack');
+import app from 'app';
+import jetpack from 'fs-jetpack';
 
-class WindowState {
+export default class WindowState {
   constructor(name, defaults) {
     this.userDataDir = jetpack.cwd(app.getPath('userData'));
     this.stateFile = `window-state-${name}.json`;
@@ -34,6 +34,4 @@ class WindowState {
   get height() { return this.state.height; }
   get isMaximized() { return this.state.isMaximized; }
 }
-
-module.exports = WindowState;
 
